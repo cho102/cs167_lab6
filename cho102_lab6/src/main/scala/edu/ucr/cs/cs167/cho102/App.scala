@@ -18,26 +18,26 @@ object App {
     val sparkContext = new SparkContext(conf)
     try {
       val inputRDD: RDD[String] = sparkContext.textFile(inputfile)
-      val validLines: RDD[String] = // TODO 1a: filter lines which do not start with "host\tlogname" from `inputRDD`
-      val parsedLines: RDD[Array[String]] = // TODO 1b: split each line by "\t" from `validLines` via `map`
+      val validLines: RDD[String] = inputRDD.filter(x => !x.startsWith("host\tlogname"));// TODO 1a: filter lines which do not start with "host\tlogname" from `inputRDD`
+      val parsedLines: RDD[Array[String]] = validLines.map(x => x.split("\t"));// TODO 1b: split each line by "\t" from `validLines` via `map`
       val t1 = System.nanoTime
       var valid_command = true
       command match {
         case "count-all" =>
           // Count total number of records in the file
-          val count: Long = // TODO 2: count total number of records in the file on `parsedLines`
+          val count: Long = parsedLines.count();// TODO 2: count total number of records in the file on `parsedLines`
             println(s"Total count for file '$inputfile' is $count")
         case "code-filter" =>
           // Filter the file by response code, args(2), and print the total number of matching lines
           val responseCode: String = args(2)
-          val filteredLines: RDD[Array[String]] = // TODO 3: `filter` on `parsedLines` by `responseCode`
+          val filteredLines: RDD[Array[String]] = parsedLines.filter(x => x == responseCode);// TODO 3: `filter` on `parsedLines` by `responseCode`
           val count: Long = filteredLines.count()
           println(s"Total count for file '$inputfile' with response code $responseCode is $count")
         case "time-filter" =>
           // Filter by time range [from = args(2), to = args(3)], and print the total number of matching lines
           val from: Long = args(2).toLong
           val to: Long = args(3).toLong
-          val filteredLines: RDD[Array[String]] = // TODO 4: `filter` on `parsedLines` by time (column 2) with `from` and `to`
+          val filteredLines: RDD[Array[String]] = parsedLines.filter(time => time>=from && time<=to)// TODO 4: `filter` on `parsedLines` by time (column 2) with `from` and `to`
           val count: Long = filteredLines.count()
           println(s"Total count for file '$inputfile' in time range [$from, $to] is $count")
         case "count-by-code" =>
