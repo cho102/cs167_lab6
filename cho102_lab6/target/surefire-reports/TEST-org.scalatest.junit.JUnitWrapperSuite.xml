@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuite 
-errors="0" failures="0" hostname="cs167" name="org.scalatest.junit.JUnitWrapperSuite" tests="0" time="0.335" timestamp="2023-02-13T21:33:37">
+errors="0" failures="0" hostname="cs167" name="org.scalatest.junit.JUnitWrapperSuite" tests="0" time="0.106" timestamp="2023-02-14T18:11:51">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
-    <property name="java.vm.version" value="11.0.14.1+1-Ubuntu-0ubuntu1.18.04">
-    </property>
+    <property 
+    name="java.vm.version" value="11.0.17+8-post-Ubuntu-1ubuntu218.04">
+</property>
     <property 
     name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib">
 </property>
@@ -23,7 +24,7 @@ errors="0" failures="0" hostname="cs167" name="org.scalatest.junit.JUnitWrapperS
 </property>
     <property name="java.vm.compressedOopsMode" value="32-bit"/>
     <property 
-    name="java.runtime.version" value="11.0.14.1+1-Ubuntu-0ubuntu1.18.04">
+    name="java.runtime.version" value="11.0.17+8-post-Ubuntu-1ubuntu218.04">
 </property>
     <property 
     name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment">
@@ -68,10 +69,10 @@ errors="0" failures="0" hostname="cs167" name="org.scalatest.junit.JUnitWrapperS
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
-    <property name="java.version" value="11.0.14.1"/>
+    <property name="java.version" value="11.0.17"/>
     <property name="java.vendor" value="Ubuntu"/>
     <property name="file.separator" value="/"/>
-    <property name="java.version.date" value="2022-02-08"/>
+    <property name="java.version.date" value="2022-10-18"/>
     <property 
     name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-lts">
 </property>

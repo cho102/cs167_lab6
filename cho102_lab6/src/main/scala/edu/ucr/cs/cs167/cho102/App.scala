@@ -30,35 +30,35 @@ object App {
         case "code-filter" =>
           // Filter the file by response code, args(2), and print the total number of matching lines
           val responseCode: String = args(2)
-          val filteredLines: RDD[Array[String]] = parsedLines.filter(x => x == responseCode);// TODO 3: `filter` on `parsedLines` by `responseCode`
+          val filteredLines: RDD[Array[String]] = parsedLines.filter(line => line(5) == responseCode);// TODO 3: `filter` on `parsedLines` by `responseCode`
           val count: Long = filteredLines.count()
           println(s"Total count for file '$inputfile' with response code $responseCode is $count")
         case "time-filter" =>
           // Filter by time range [from = args(2), to = args(3)], and print the total number of matching lines
           val from: Long = args(2).toLong
           val to: Long = args(3).toLong
-          val filteredLines: RDD[Array[String]] = parsedLines.filter(time => time>=from && time<=to)// TODO 4: `filter` on `parsedLines` by time (column 2) with `from` and `to`
+          val filteredLines: RDD[Array[String]] = parsedLines.filter(line => line(2).toLong>=from && line(2).toLong<=to) // TODO 4: `filter` on `parsedLines` by time (column 2) with `from` and `to`
           val count: Long = filteredLines.count()
           println(s"Total count for file '$inputfile' in time range [$from, $to] is $count")
         case "count-by-code" =>
           // Group the lines by response code and count the number of records per group
-          val loglinesByCode: RDD[(String, Long)] = // TODO 5a: `map` on `parsedLines` by response code (column 5)
-          val counts: Map[String, Long] = // TODO 5b: `countByKey` on `loglinesByCode`
+          val loglinesByCode: RDD[(String, Long)] = parsedLines.map(line => (line(5),1))// TODO 5a: `map` on `parsedLines` by response code (column 5)
+          val counts: Map[String, Long] = loglinesByCode.countByKey()// TODO 5b: `countByKey` on `loglinesByCode`
             println(s"Number of lines per code for the file '$inputfile'")
           println("Code,Count")
           counts.toSeq.sortBy(_._1).foreach(pair => println(s"${pair._1},${pair._2}"))
         case "sum-bytes-by-code" =>
           // Group the lines by response code and sum the total bytes per group
-          val loglinesByCode: RDD[(String, Long)] = // TODO 6a: `map` on `parsedLines` by response code (column 5) and bytes (column 6)
-          val sums: RDD[(String, Long)] = // TODO 6b: `reduceByKey` on `loglinesByCode`
+          val loglinesByCode: RDD[(String, Long)] = parsedLines.map(line => (line(5),line(6).toLong)) // TODO 6a: `map` on `parsedLines` by response code (column 5) and bytes (column 6)
+          val sums: RDD[(String, Long)] = loglinesByCode.reduceByKey((x,y) => x+y)// TODO 6b: `reduceByKey` on `loglinesByCode`
             println(s"Total bytes per code for the file '$inputfile'")
           println("Code,Sum(bytes)")
           sums.sortByKey().collect().foreach(pair => println(s"${pair._1},${pair._2}"))
         case "avg-bytes-by-code" =>
           // Group the liens by response code and calculate the average bytes per group
-          val loglinesByCode: RDD[(String, Long)] = // TODO 7a: `map` on `parsedLines` by response code (column 5) and bytes (column 6)
-          val sums: RDD[(String, Long)] = // TODO 7b: `reduceByKey` on `loglinesByCode`
-          val counts: Map[String, Long] = // TODO 7c: `countByKey` on `loglinesByCode`
+          val loglinesByCode: RDD[(String, Long)] = parsedLines.map(line => (line(5),line(6).toLong)) // TODO 7a: `map` on `parsedLines` by response code (column 5) and bytes (column 6)
+          val sums: RDD[(String, Long)] = loglinesByCode.reduceByKey(_+_)// TODO 7b: `reduceByKey` on `loglinesByCode`
+          val counts: Map[String, Long] = loglinesByCode.countByKey()// TODO 7c: `countByKey` on `loglinesByCode`
             println(s"Average bytes per code for the file '$inputfile'")
           println("Code,Avg(bytes)")
           sums.sortByKey().collect().foreach(pair => {
@@ -70,10 +70,10 @@ object App {
         // TODO 7d: replace the above codes for bonus with `aggregateByKey`
         case "top-host" =>
           // Print the host the largest number of lines and print the number of lines
-          val loglinesByHost: RDD[(String, Long)] = // TODO 8a: `map` on `parsedLines` by host (column 0)
-          val counts: RDD[(String, Long)] = // TODO 8b: `reduceByKey` on `loglinesByHost`
-          val sorted: RDD[(String, Long)] = // TODO 8c: `sortBy` on `counts`
-          val topHost: (String, Long) = // TODO 8d: `first` on `sorted`
+          val loglinesByHost: RDD[(String, Long)] = parsedLines.map(line => (line(0),1))// TODO 8a: `map` on `parsedLines` by host (column 0)
+          val counts: RDD[(String, Long)] = loglinesByHost.reduceByKey(_+_)// TODO 8b: `reduceByKey` on `loglinesByHost`
+          val sorted: RDD[(String, Long)] = counts.sortBy(_._2,ascending = false)// TODO 8c: `sortBy` on `counts`
+          val topHost: (String, Long) = sorted.first()// TODO 8d: `first` on `sorted`
             println(s"Top host in the file '$inputfile' by number of entries")
           println(s"Host: ${topHost._1}")
           println(s"Number of entries: ${topHost._2}")
