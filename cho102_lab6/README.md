@@ -13,6 +13,6 @@
 
 * (Q2) If you do this bonus part, copy and paste your code in the README file as an answer to this question.
 
-* (Q3) What is the type of the attributes `time` and `bytes` this time? Why?
+* (Q3) What is the type of the attributes `time` and `bytes` this time? Why? </br> The attributes of `time` and `bytes` are parsed as strings because spark doesn't try to infer that they are integers.
 
 * (Q4) If you do this bonus part, copy and paste your code in the README file as an aswer to this question.
