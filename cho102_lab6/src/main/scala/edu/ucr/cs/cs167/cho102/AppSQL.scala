@@ -25,7 +25,7 @@ object AppSQL {
         .option("inferSchema", "true")
         .option("header", "true")
         .load(inputfile)
-      import spark.implicits._
+      git import spark.implicits._
       input.createOrReplaceTempView("log_lines")
       val t1 = System.nanoTime
       var validCommand = true
